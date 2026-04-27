@@ -1,0 +1,22 @@
+{
+  "models": [
+    { "name": "天津風 (Amatsukaze)", "folder": "amatsukaze", "pmx": "天津風.pmx", "thumbnail": "🚢" },
+    { "name": "絆愛 (Kizuna AI)", "folder": "kizunaai", "pmx": "kizunaai.pmx", "thumbnail": "🤖" },
+    { "name": "初音ミク Lat式", "folder": "miku_lat", "pmx": "mikuVer2.31_Normal.pmd", "thumbnail": "🎤" },
+    { "name": "蕾米莉亚 (Remilia)", "folder": "remilia", "pmx": "remilia1.pmx", "thumbnail": "🦇" },
+    { "name": "Ruby-chan", "folder": "ruby-chan", "pmx": "Ruby-chan.pmd", "thumbnail": "💎" }
+  ],
+  "motions": [
+    { "name": "Pink Cat", "file": "pinkcat.vmd" },
+    { "name": "Deep Sea Girl", "file": "Deep Sea Girl.vmd" },
+    { "name": "Masked Bitch", "file": "Masked bitch.vmd" },
+    { "name": "路西恩融解", "file": "luxinrongjie.vmd" }
+  ],
+  "cameras": [
+    { "name": "Camera Motion", "file": "camera.vmd" }
+  ],
+  "audio": [
+    { "name": "Pink Cat", "file": "pinkcat.mp3" },
+    { "name": "深海少女", "file": "shenhaishaonv.mp3" }
+  ]
+}
