@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MMD Viewer</title>
+  <script type="module" crossorigin src="/assets/index-C9wHp3dv.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-DV7ByKYa.css">
+</head>
+<body>
+  <div id="app">
+    <div id="toolbar">
+      <h1 data-i18n="title">🎵 MMD Viewer</h1>
+      <div class="controls">
+        <label class="file-btn"><span data-i18n="btn.loadModel">📦 加载模型文件夹</span>
+          <input type="file" id="pmx-folder-input" webkitdirectory directory multiple />
+        </label>
+        <label class="file-btn"><span data-i18n="btn.loadMotion">💃 加载动作 (VMD)</span>
+          <input type="file" id="vmd-input" accept=".vmd" multiple />
+        </label>
+        <label class="file-btn"><span data-i18n="btn.loadCamera">🎥 加载相机 (VMD)</span>
+          <input type="file" id="camera-input" accept=".vmd" />
+        </label>
+        <label class="file-btn"><span data-i18n="btn.loadStage">🏟 加载场景文件夹</span>
+          <input type="file" id="stage-folder-input" webkitdirectory directory multiple />
+        </label>
+        <label class="file-btn"><span data-i18n="btn.loadAudio">🎵 加载音乐</span>
+          <input type="file" id="audio-input" accept=".mp3,.wav,.ogg" />
+        </label>
+      </div>
+      <div class="playback">
+        <button id="play-btn" disabled data-i18n="btn.play">▶ 播放</button>
+        <button id="pause-btn" disabled data-i18n="btn.pause">⏸ 暂停</button>
+        <button id="reset-btn" disabled data-i18n="btn.reset">⏹ 重置</button>
+        <span class="volume-control">🔊 <input type="range" id="volume" min="0" max="100" value="80" step="1" /></span>
+        <span id="time-display">00:00 / 00:00</span>
+      </div>
+      <div class="progress-bar">
+        <input type="range" id="progress" min="0" max="100" value="0" step="0.1" disabled />
+      </div>
+      <button id="toggle-panel" data-i18n-title="render.title">⚙</button>
+      <button id="toggle-mat-editor" title="单独材质编辑">🎨</button>
+      <button id="toggle-library" data-i18n-title="lib.title">📚</button>
+      <button id="screenshot-btn" class="lang-btn" title="截图 (P)">📷</button>
+      <button id="toggle-morph" class="lang-btn" title="表情控制">😊</button>
+      <button id="toggle-models" class="lang-btn" title="模型管理">👥</button>
+      <button id="toggle-model-editor" class="lang-btn" title="模型编辑">✏️</button>
+      <button id="transform-toggle" class="lang-btn" title="变换工具">✥</button>
+      <button id="generate-watch-url" class="lang-btn" title="生成观看链接">🔗</button>
+      <button id="import-watch-url" class="lang-btn" title="导入观看链接">📥</button>
+      <button id="lang-toggle" class="lang-btn">EN</button>
+      <a href="/help.html" target="_blank" class="lang-btn" style="text-decoration:none" title="帮助">❓</a>
+      <button id="fullscreen-btn" class="lang-btn" title="全屏">⛶</button>
+      <button id="toolbar-collapse" class="collapse-btn" title="收起工具栏">▲</button>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <!-- Resource info overlay (top-left) -->
+    <div id="resource-info-panel">
+      <div id="resource-info">未加载任何资源</div>
+    </div>
+
+    <!-- Library -->
+    <div id="library-panel" class="hidden">
+      <div class="panel-header">
+        <span data-i18n="lib.title">📚 内置资源库</span>
+        <button id="close-library">✕</button>
+      </div>
+      <div class="panel-body">
+        <div class="lib-section"><h3 data-i18n="lib.models">📦 模型</h3><div id="lib-models" class="lib-grid"></div></div>
+        <div class="lib-section"><h3 data-i18n="lib.motions">💃 舞蹈动作</h3><div id="lib-motions" class="lib-list"></div></div>
+        <div class="lib-section"><h3 data-i18n="lib.cameras">🎥 相机动画</h3><div id="lib-cameras" class="lib-list"></div></div>
+        <div class="lib-section"><h3 data-i18n="lib.audio">🎵 音乐</h3><div id="lib-audio" class="lib-list"></div></div>
+        <div class="lib-section lib-hint" data-i18n="lib.hint">也可以使用工具栏按钮上传自己的文件</div>
+      </div>
+    </div>
+
+    <!-- Render Settings -->
+    <div id="render-panel" class="hidden">
+      <div class="panel-header">
+        <span data-i18n="render.title">🎨 渲染设置</span>
+        <button id="close-panel">✕</button>
+      </div>
+      <div class="panel-body">
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="render.presets">🎭 快速预设</label></div>
+          <div class="setting-sub always-show">
+            <div class="preset-btns">
+              <button class="preset-btn" data-preset="default" data-i18n="preset.default">默认</button>
+              <button class="preset-btn" data-preset="anime" data-i18n="preset.anime">卡通二次元</button>
+              <button class="preset-btn" data-preset="soft" data-i18n="preset.soft">写实柔和</button>
+              <button class="preset-btn" data-preset="warmStage" data-i18n="preset.warmStage">暖光舞台</button>
+              <button class="preset-btn" data-preset="cyberpunk" data-i18n="preset.cyberpunk">赛博朋克</button>
+              <button class="preset-btn" data-preset="sunset" data-i18n="preset.sunset">日落黄昏</button>
+              <button class="preset-btn" data-preset="moonlight" data-i18n="preset.moonlight">月光清冷</button>
+              <button class="preset-btn" data-preset="concert" data-i18n="preset.concert">演唱会</button>
+              <button class="preset-btn" data-preset="watercolor" data-i18n="preset.watercolor">水彩画风</button>
+              <button class="preset-btn" data-preset="guofeng" data-i18n="preset.guofeng">古风仙侠</button>
+              <button class="preset-btn" data-preset="guofeng2" data-i18n="preset.guofeng2">古风仙侠 v2</button>
+              <button class="preset-btn" data-preset="guofeng3" data-i18n="preset.guofeng3">古风仙侠 v3</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="setting-group"><div class="setting-row section-title" data-i18n="section.material">一、材质参数</div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="mat.skin">👤 皮肤</label></div>
+          <div class="setting-sub always-show">
+            <label><span data-i18n="mat.diffuseIntensity">Diffuse 强度</span> <input type="range" id="skin-diffuse" min="0.5" max="1.5" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.diffuseColor">Diffuse 色调</span> <input type="color" id="skin-diffuse-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specIntensity">高光强度</span> <input type="range" id="skin-spec" min="0" max="1" step="0.05" value="0.3" /> <span class="val">0.30</span></label>
+            <label><span data-i18n="mat.specColor">高光颜色</span> <input type="color" id="skin-spec-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specRange">高光范围</span> <input type="range" id="skin-shininess" min="1" max="100" step="1" value="15" /> <span class="val">15</span></label>
+            <label><span data-i18n="mat.toon">Toon 强度</span> <input type="range" id="skin-toon" min="0" max="1" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.sph">SPH 反光</span> <input type="range" id="skin-sph" min="0" max="1" step="0.05" value="0.15" /> <span class="val">0.15</span></label>
+            <label><span data-i18n="mat.sss">SSS 通透</span> <input type="range" id="skin-sss" min="0" max="0.5" step="0.01" value="0.2" /> <span class="val">0.20</span></label>
+            <label><span data-i18n="mat.bump">凹凸/法线强度</span> <input type="range" id="skin-bump" min="0" max="2" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.matcapMode">Matcap 混合模式</span> <select id="skin-matcap-mode"><option value="add" data-i18n="mat.matcapAdd">叠加</option><option value="multiply" data-i18n="mat.matcapMultiply">正片叠底</option></select></label>
+            <label><span data-i18n="mat.opacity">透明度</span> <input type="range" id="skin-opacity" min="0" max="1" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="mat.hair">💇 头发</label></div>
+          <div class="setting-sub always-show">
+            <label><span data-i18n="mat.diffuseIntensity">Diffuse 强度</span> <input type="range" id="hair-diffuse" min="0.5" max="1.5" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.diffuseColor">Diffuse 色调</span> <input type="color" id="hair-diffuse-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specIntensity">高光强度</span> <input type="range" id="hair-spec" min="0" max="1.5" step="0.05" value="0.7" /> <span class="val">0.70</span></label>
+            <label><span data-i18n="mat.specColor">高光颜色</span> <input type="color" id="hair-spec-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specRange">高光范围</span> <input type="range" id="hair-shininess" min="1" max="100" step="1" value="40" /> <span class="val">40</span></label>
+            <label><span data-i18n="mat.toon">Toon 强度</span> <input type="range" id="hair-toon" min="0" max="1" step="0.05" value="0.95" /> <span class="val">0.95</span></label>
+            <label><span data-i18n="mat.sph">SPH 反光</span> <input type="range" id="hair-sph" min="0" max="1" step="0.05" value="0.4" /> <span class="val">0.40</span></label>
+            <label><span data-i18n="mat.bump">凹凸/法线强度</span> <input type="range" id="hair-bump" min="0" max="2" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.matcapMode">Matcap 混合模式</span> <select id="hair-matcap-mode"><option value="add" data-i18n="mat.matcapAdd">叠加</option><option value="multiply" data-i18n="mat.matcapMultiply">正片叠底</option></select></label>
+            <label><span data-i18n="mat.opacity">透明度</span> <input type="range" id="hair-opacity" min="0" max="1" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="mat.eye">👁 眼睛</label></div>
+          <div class="setting-sub always-show">
+            <label><span data-i18n="mat.diffuseIntensity">Diffuse 强度</span> <input type="range" id="eye-diffuse" min="0.5" max="1.5" step="0.05" value="1.2" /> <span class="val">1.20</span></label>
+            <label><span data-i18n="mat.specIntensity">高光强度</span> <input type="range" id="eye-spec" min="0" max="2" step="0.05" value="1.2" /> <span class="val">1.20</span></label>
+            <label><span data-i18n="mat.specColor">高光颜色</span> <input type="color" id="eye-spec-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specRange">高光范围</span> <input type="range" id="eye-shininess" min="1" max="150" step="1" value="80" /> <span class="val">80</span></label>
+            <label><span data-i18n="mat.emissive">自发光</span> <input type="range" id="eye-emissive" min="0" max="0.5" step="0.01" value="0.3" /> <span class="val">0.30</span></label>
+            <label><span data-i18n="mat.emissiveColor">自发光颜色</span> <input type="color" id="eye-emissive-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.opacity">透明度</span> <input type="range" id="eye-opacity" min="0" max="1" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="mat.cloth">👗 衣服</label></div>
+          <div class="setting-sub always-show">
+            <label><span data-i18n="mat.diffuseIntensity">Diffuse 强度</span> <input type="range" id="cloth-diffuse" min="0.5" max="1.5" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.diffuseColor">Diffuse 色调</span> <input type="color" id="cloth-diffuse-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.specIntensity">高光强度</span> <input type="range" id="cloth-spec" min="0" max="1.5" step="0.05" value="0.3" /> <span class="val">0.30</span></label>
+            <label><span data-i18n="mat.specColor">高光颜色</span> <input type="color" id="cloth-spec-color" value="#ffffff" /></label>
+            <label><span data-i18n="mat.toon">Toon 强度</span> <input type="range" id="cloth-toon" min="0" max="1" step="0.05" value="0.8" /> <span class="val">0.80</span></label>
+            <label><span data-i18n="mat.sph">SPH 反光</span> <input type="range" id="cloth-sph" min="0" max="1" step="0.05" value="0.1" /> <span class="val">0.10</span></label>
+            <label><span data-i18n="mat.bump">凹凸/法线强度</span> <input type="range" id="cloth-bump" min="0" max="2" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+            <label><span data-i18n="mat.matcapMode">Matcap 混合模式</span> <select id="cloth-matcap-mode"><option value="add" data-i18n="mat.matcapAdd">叠加</option><option value="multiply" data-i18n="mat.matcapMultiply">正片叠底</option></select></label>
+            <label><span data-i18n="mat.opacity">透明度</span> <input type="range" id="cloth-opacity" min="0" max="1" step="0.05" value="1.0" /> <span class="val">1.00</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group"><div class="setting-row section-title" data-i18n="section.lighting">二、打光参数</div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-main-light" checked /> <span data-i18n="light.main">☀ 主光</span></label></div>
+          <div class="setting-sub" data-parent="opt-main-light">
+            <label><span data-i18n="light.intensity">强度</span> <input type="range" id="main-light-intensity" min="0" max="2" step="0.05" value="0.7" /> <span class="val">0.70</span></label>
+            <label><span data-i18n="light.colorTemp">色温</span> <input type="range" id="main-light-temp" min="3000" max="8000" step="100" value="5800" /> <span class="val">5800K</span></label>
+            <label>X <input type="range" id="main-light-x" min="-1" max="1" step="0.05" value="-0.35" /> <span class="val">-0.35</span></label>
+            <label>Y <input type="range" id="main-light-y" min="-1" max="1" step="0.05" value="0.25" /> <span class="val">0.25</span></label>
+            <label>Z <input type="range" id="main-light-z" min="-1" max="1" step="0.05" value="-0.8" /> <span class="val">-0.80</span></label>
+            <label><span data-i18n="light.shadowIntensity">阴影强度</span> <input type="range" id="shadow-intensity" min="0" max="1" step="0.05" value="0.8" /> <span class="val">0.80</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-fill-light" checked /> <span data-i18n="light.fill">💡 补光</span></label></div>
+          <div class="setting-sub" data-parent="opt-fill-light">
+            <label><span data-i18n="light.intensity">强度</span> <input type="range" id="fill-light-intensity" min="0" max="1" step="0.05" value="0.35" /> <span class="val">0.35</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-rim-light" checked /> <span data-i18n="light.rim">✨ 轮廓光</span></label></div>
+          <div class="setting-sub" data-parent="opt-rim-light">
+            <label><span data-i18n="light.intensity">强度</span> <input type="range" id="rim-light-intensity" min="0" max="1" step="0.05" value="0.5" /> <span class="val">0.50</span></label>
+          </div>
+        </div>
+        <div class="setting-group"><div class="setting-row"><label><input type="checkbox" id="opt-hemi-light" checked /> <span data-i18n="light.hemi">🌐 环境半球光</span></label></div></div>
+        <div class="setting-group"><div class="setting-row"><label><input type="checkbox" id="opt-stage-light" checked /> <span data-i18n="light.stage">💜 舞台地灯</span></label></div></div>
+
+        <div class="setting-group"><div class="setting-row section-title" data-i18n="section.postfx">三、后处理滤镜</div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-outline" checked /> <span data-i18n="fx.outline">轮廓线</span></label></div>
+          <div class="setting-sub" data-parent="opt-outline">
+            <label><span data-i18n="fx.outlineWidth">宽度</span> <input type="range" id="outline-width" min="0.1" max="3" step="0.1" value="1.0" /> <span class="val">1.0</span></label>
+            <label><span data-i18n="fx.outlineColor">颜色</span> <input type="color" id="outline-color" value="#1a1a1a" /></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-bloom" checked /> <span data-i18n="fx.bloom">Bloom 泛光</span></label></div>
+          <div class="setting-sub" data-parent="opt-bloom">
+            <label><span data-i18n="fx.bloomStrength">强度</span> <input type="range" id="bloom-strength" min="0" max="2" step="0.05" value="0.3" /> <span class="val">0.30</span></label>
+            <label><span data-i18n="fx.bloomRadius">半径</span> <input type="range" id="bloom-radius" min="0" max="2" step="0.05" value="0.4" /> <span class="val">0.40</span></label>
+            <label><span data-i18n="fx.bloomThreshold">阈值</span> <input type="range" id="bloom-threshold" min="0" max="1" step="0.01" value="0.85" /> <span class="val">0.85</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-color" checked /> <span data-i18n="fx.color">色彩校正</span></label></div>
+          <div class="setting-sub" data-parent="opt-color">
+            <label><span data-i18n="fx.brightness">亮度</span> <input type="range" id="color-brightness" min="-0.2" max="0.2" step="0.01" value="0.02" /> <span class="val">0.02</span></label>
+            <label><span data-i18n="fx.contrast">对比度</span> <input type="range" id="color-contrast" min="0.5" max="1.5" step="0.01" value="1.08" /> <span class="val">1.08</span></label>
+            <label><span data-i18n="fx.saturation">饱和度</span> <input type="range" id="color-saturation" min="0" max="2" step="0.01" value="1.15" /> <span class="val">1.15</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-dof" /> <span data-i18n="fx.dof">景深 (DOF)</span></label></div>
+          <div class="setting-sub" data-parent="opt-dof">
+            <label><span data-i18n="fx.dofFocus">焦距</span> <input type="range" id="dof-focus" min="1" max="100" step="1" value="20" /> <span class="val">20</span></label>
+            <label><span data-i18n="fx.dofAperture">光圈</span> <input type="range" id="dof-aperture" min="0" max="0.01" step="0.0001" value="0.002" /> <span class="val">0.002</span></label>
+            <label><span data-i18n="fx.dofMaxblur">最大模糊</span> <input type="range" id="dof-maxblur" min="0" max="0.02" step="0.001" value="0.005" /> <span class="val">0.005</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-mat-enhance" checked /> <span data-i18n="fx.sssEnhance">皮肤 SSS 增强</span></label></div>
+          <div class="setting-sub" data-parent="opt-mat-enhance">
+            <label><span data-i18n="fx.sssStrength">SSS 强度</span> <input type="range" id="mat-sss" min="0" max="1" step="0.05" value="0.35" /> <span class="val">0.35</span></label>
+            <label><span data-i18n="fx.sssColor">散射色</span> <input type="color" id="sss-color" value="#ff4d33" /></label>
+            <label><span data-i18n="fx.fresnel">边缘柔光</span> <input type="range" id="mat-fresnel" min="0" max="1" step="0.05" value="0.4" /> <span class="val">0.40</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-sharpen" /> <span data-i18n="fx.sharpen">锐化</span></label></div>
+          <div class="setting-sub" data-parent="opt-sharpen">
+            <label><span data-i18n="fx.sharpenStrength">锐化强度</span> <input type="range" id="sharpen-strength" min="0" max="1" step="0.05" value="0" /> <span class="val">0.00</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-vignette" checked /> <span data-i18n="fx.vignette">暗角</span></label></div>
+          <div class="setting-sub" data-parent="opt-vignette">
+            <label><span data-i18n="fx.vignetteStrength">暗角强度</span> <input type="range" id="vignette-strength" min="0" max="2" step="0.05" value="0.5" /> <span class="val">0.50</span></label>
+            <label><span data-i18n="fx.vignetteSoftness">暗角柔和度</span> <input type="range" id="vignette-softness" min="0" max="1" step="0.05" value="0.5" /> <span class="val">0.50</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-tonesplit" /> <span data-i18n="fx.toneSplit">色调分离</span></label></div>
+          <div class="setting-sub" data-parent="opt-tonesplit">
+            <label><span data-i18n="fx.toneSplitShadow">暗部色调</span> <input type="color" id="tonesplit-shadow-hue" value="#334466" /></label>
+            <label><span data-i18n="fx.toneSplitHighlight">亮部色调</span> <input type="color" id="tonesplit-highlight-hue" value="#fff5e6" /></label>
+            <label><span data-i18n="fx.toneSplitStrength">分离强度</span> <input type="range" id="tonesplit-strength" min="0" max="1" step="0.05" value="0" /> <span class="val">0.00</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-fxaa" /> <span data-i18n="fx.fxaa">FXAA 抗锯齿</span></label></div>
+        </div>
+
+        <div class="setting-group"><div class="setting-row section-title" data-i18n="section.shadow">四、阴影 & 环境</div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-shadow" checked /> <span data-i18n="env.shadow">阴影</span></label></div>
+          <div class="setting-sub" data-parent="opt-shadow">
+            <label><span data-i18n="env.shadowRes">分辨率</span> <select id="shadow-quality"><option value="1024">1024</option><option value="2048">2048</option><option value="4096" selected>4096</option></select></label>
+            <label><span data-i18n="env.shadowBlur">模糊</span> <input type="range" id="shadow-blur" min="0" max="8" step="0.5" value="2" /> <span class="val">2.0</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-envmap" checked /> <span data-i18n="env.envmap">环境反射</span></label></div>
+          <div class="setting-sub" data-parent="opt-envmap">
+            <label><span data-i18n="env.envmapIntensity">强度</span> <input type="range" id="envmap-intensity" min="0" max="2" step="0.05" value="0.3" /> <span class="val">0.30</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><input type="checkbox" id="opt-fog" checked /> <span data-i18n="env.fog">雾效</span></label></div>
+          <div class="setting-sub" data-parent="opt-fog">
+            <label><span data-i18n="env.fogDensity">浓度</span> <input type="range" id="fog-density" min="0" max="0.05" step="0.001" value="0.008" /> <span class="val">0.008</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group"><div class="setting-row section-title" data-i18n="section.stage">五、舞台 & 输出</div></div>
+
+        <div class="setting-group"><div class="setting-row"><label><input type="checkbox" id="opt-ground" checked /> <span data-i18n="stage.ground">反射地面</span></label></div></div>
+        <div class="setting-group"><div class="setting-row"><label><input type="checkbox" id="opt-ring" checked /> <span data-i18n="stage.ring">发光圆环</span></label></div></div>
+        <div class="setting-group"><div class="setting-row"><label><input type="checkbox" id="opt-grid" checked /> <span data-i18n="stage.grid">网格线</span></label></div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label data-i18n="stage.toneMapping">色调映射</label></div>
+          <div class="setting-sub always-show">
+            <label><select id="tone-mapping"><option value="ACES" selected>ACES</option><option value="Reinhard">Reinhard</option><option value="Cineon">Cineon</option><option value="Linear">Linear</option><option value="AgX">AgX</option><option value="Neutral">Neutral</option></select></label>
+            <label><span data-i18n="stage.exposure">曝光</span> <input type="range" id="tone-exposure" min="0.2" max="3" step="0.05" value="1.4" /> <span class="val">1.40</span></label>
+          </div>
+        </div>
+        <div class="setting-group"><div class="setting-row"><label><span data-i18n="stage.bgColor">背景颜色</span> <input type="color" id="bg-color" value="#0d0d1a" /></label></div></div>
+        <div class="setting-group"><div class="setting-row"><label><span data-i18n="stage.aa">抗锯齿</span> <select id="aa-level"><option value="1">1x</option><option value="2" selected>2x</option></select></label></div></div>
+
+        <div class="setting-group">
+          <div class="setting-row"><label><span data-i18n="stage.cameraFov">相机视角 (FOV)</span></label></div>
+          <div class="setting-sub always-show">
+            <label><input type="range" id="camera-fov" min="20" max="120" step="1" value="45" /> <span class="val">45</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><span data-i18n="stage.animSpeed">动画速度</span></label></div>
+          <div class="setting-sub always-show">
+            <label><input type="range" id="anim-speed" min="0.1" max="3" step="0.1" value="1.0" /> <span class="val">1.0</span></label>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label><span data-i18n="stage.gravity">重力</span></label></div>
+          <div class="setting-sub always-show">
+            <label><input type="range" id="physics-gravity" min="-30" max="0" step="0.1" value="-9.8" /> <span class="val">-9.8</span></label>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <button id="export-params" class="reset-btn-render" data-i18n="btn.exportParams">📤 导出参数</button>
+          <label class="reset-btn-render import-label"><span data-i18n="btn.importParams">📥 导入参数</span>
+            <input type="file" id="import-params" accept=".json" />
+          </label>
+          <button id="reset-render" class="reset-btn-render" data-i18n="btn.resetRender">↺ 恢复默认</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Material Editor Panel -->
+    <div id="mat-editor-panel" class="hidden">
+      <div class="panel-header">
+        <span>🎨 <span data-i18n="matEditor.title">单独材质编辑</span></span>
+        <button id="close-mat-editor">✕</button>
+      </div>
+      <div class="mat-editor-body">
+        <div class="mat-editor-left">
+          <div class="mat-editor-list-header" data-i18n="matEditor.materials">材质列表</div>
+          <div id="mat-editor-list" class="mat-editor-list"></div>
+        </div>
+        <div class="mat-editor-right">
+          <div id="mat-editor-params" class="mat-editor-params"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Morph Panel -->
+    <div id="morph-panel" class="hidden">
+      <div class="panel-header">
+        <span>😊 <span data-i18n="morph.title">表情控制</span></span>
+        <button id="close-morph">✕</button>
+      </div>
+      <div id="morph-panel-body" class="panel-body"></div>
+    </div>
+
+    <!-- Model Manager Panel -->
+    <div id="model-manager-panel" class="hidden">
+      <div class="panel-header">
+        <span>👥 <span data-i18n="models.title">模型管理</span></span>
+        <button id="close-model-manager">✕</button>
+      </div>
+      <div class="panel-body">
+        <div id="model-list"></div>
+        <div class="model-manager-actions">
+          <div class="transform-controls-row">
+            <button id="transform-translate" class="transform-mode-btn active" title="移动">↔</button>
+            <button id="transform-rotate" class="transform-mode-btn" title="旋转">↻</button>
+            <button id="transform-scale" class="transform-mode-btn" title="缩放">⇲</button>
+          </div>
+        </div>
+        <div class="setting-group">
+          <div class="setting-row"><label>环境贴图</label></div>
+          <div class="setting-sub always-show">
+            <label><select id="env-select"></select></label>
+            <label class="file-btn" style="display:inline-block;margin-top:4px"><span>📂 加载 HDR</span><input type="file" id="hdr-input" accept=".hdr,.exr" /></label>
+            <label style="font-size:12px;margin-top:4px"><input type="checkbox" id="env-as-bg" /> 环境作为背景</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Model Editor Panel -->
+    <div id="model-editor-panel" class="hidden">
+      <div class="panel-header">
+        <span>✏️ <span data-i18n="modelEditor.title">模型编辑</span></span>
+        <button id="close-model-editor">✕</button>
+      </div>
+      <div id="model-editor-body" class="panel-body"></div>
+    </div>
+
+    <div id="status-bar">
+      <span id="status-text" data-i18n="status.ready">请加载包含 PMX 模型的文件夹</span>
+      <span id="fps-counter"></span>
+    </div>
+
+    <div id="loading-overlay" class="hidden">
+      <div class="spinner"></div>
+      <p id="loading-text" data-i18n="loading.generic">加载中...</p>
+    </div>
+  </div>
+
+  <script src="/libs/ammo.wasm.js"></script>
+</body>
+</html>

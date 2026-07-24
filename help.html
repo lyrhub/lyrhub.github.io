@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMD Viewer - Help</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI','Microsoft YaHei',sans-serif;background:#0d0d1a;color:#ddd;line-height:1.7;padding:0}
+.container{max-width:900px;margin:0 auto;padding:24px 20px 60px}
+h1{font-size:28px;margin-bottom:8px;color:#fff}
+h1 span{font-size:14px;color:#888;margin-left:12px}
+h2{font-size:20px;margin:32px 0 12px;color:#7b7bff;border-bottom:1px solid #222;padding-bottom:6px}
+h3{font-size:16px;margin:20px 0 8px;color:#aab}
+p{margin:8px 0;color:#bbb}
+a{color:#7b7bff;text-decoration:none}
+a:hover{text-decoration:underline}
+table{width:100%;border-collapse:collapse;margin:12px 0}
+th,td{padding:8px 12px;border:1px solid #222;text-align:left;font-size:13px}
+th{background:#1a1a2e;color:#aab;font-weight:600}
+td{color:#ccc}
+tr:nth-child(even) td{background:rgba(255,255,255,0.02)}
+code{background:#1a1a2e;padding:2px 6px;border-radius:3px;font-size:13px;color:#7b7bff}
+.note{background:rgba(123,123,255,0.08);border-left:3px solid #7b7bff;padding:10px 14px;margin:12px 0;border-radius:0 6px 6px 0;font-size:13px;color:#aab}
+.lang-btn{position:fixed;top:16px;right:16px;background:#2d2d5e;border:1px solid #444;border-radius:6px;padding:6px 14px;color:#7b7bff;font-weight:700;cursor:pointer;font-size:13px;z-index:10}
+.lang-btn:hover{background:#4a4aaa;color:#fff}
+.back-btn{display:inline-block;margin-bottom:16px;background:#2d2d5e;border:1px solid #444;border-radius:6px;padding:6px 14px;color:#ddd;font-size:13px;text-decoration:none}
+.back-btn:hover{background:#4a4aaa;text-decoration:none}
+.en{display:none}
+body.lang-en .zh{display:none}
+body.lang-en .en{display:block}
+body.lang-en .en-inline{display:inline}
+body.lang-en .zh-inline{display:none}
+body:not(.lang-en) .en-inline{display:none}
+body:not(.lang-en) .zh-inline{display:inline}
+ul{padding-left:20px;margin:8px 0}
+li{margin:4px 0;color:#bbb;font-size:14px}
+@media(max-width:600px){.container{padding:16px 12px}h1{font-size:22px}h2{font-size:17px}th,td{padding:6px 8px;font-size:12px}}
+</style>
+</head>
+<body>
+<button class="lang-btn" onclick="toggleLang()"><span class="zh-inline">EN</span><span class="en-inline">中文</span></button>
+<div class="container">
+
+<a href="/" class="back-btn zh">← 返回 MMD Viewer</a>
+<a href="/" class="back-btn en">← Back to MMD Viewer</a>
+
+<!-- ═══ 中文 ═══ -->
+<div class="zh">
+<h1>🎵 MMD Viewer 使用说明</h1>
+<p>基于 Three.js 的 MMD 模型预览器，支持 PMX 模型、VMD 动画、音乐同步播放和丰富的渲染参数调节。</p>
+
+<h2>一、资源加载</h2>
+<table>
+<tr><th>功能</th><th>操作</th><th>支持格式</th></tr>
+<tr><td>📦 加载模型</td><td>点击「加载模型文件夹」选择<b>整个文件夹</b></td><td>PMX / PMD + 贴图</td></tr>
+<tr><td>💃 加载动作</td><td>点击按钮或拖拽文件到视图</td><td>VMD（支持多文件）</td></tr>
+<tr><td>🎥 加载相机</td><td>点击按钮或拖拽（文件名含 camera）</td><td>VMD</td></tr>
+<tr><td>🏟 加载场景</td><td>点击「加载场景文件夹」选择整个文件夹</td><td>PMX / PMD</td></tr>
+<tr><td>🎵 加载音乐</td><td>点击按钮或拖拽文件</td><td>MP3 / WAV / OGG</td></tr>
+</table>
+<div class="note">⚠ 加载模型和场景时需要选择<b>整个文件夹</b>（包含 PMX 和贴图），不能只选单个文件。</div>
+<p>也可以点击工具栏 📚 按钮打开<b>内置资源库</b>，直接选择预置的模型、动作和音乐。</p>
+
+<h2>二、播放控制</h2>
+<table>
+<tr><th>操作</th><th>按钮</th><th>快捷键</th></tr>
+<tr><td>播放</td><td>▶ 播放</td><td>空格</td></tr>
+<tr><td>暂停</td><td>⏸ 暂停</td><td>空格</td></tr>
+<tr><td>重置</td><td>⏹ 重置</td><td>R</td></tr>
+<tr><td>音量</td><td>🔊 滑块</td><td>—</td></tr>
+</table>
+<div class="note">加载资源后不会自动播放，需要点击「播放」开始。左上角显示已加载的资源列表。</div>
+
+<h3>3D 视图操作</h3>
+<table>
+<tr><th>操作</th><th>鼠标</th><th>触屏</th></tr>
+<tr><td>旋转</td><td>左键拖动</td><td>单指滑动</td></tr>
+<tr><td>缩放</td><td>滚轮</td><td>双指捏合</td></tr>
+<tr><td>平移</td><td>右键拖动</td><td>双指滑动</td></tr>
+</table>
+
+<h2>三、渲染设置</h2>
+<p>点击工具栏 ⚙ 按钮打开渲染设置面板，分为五大板块：</p>
+
+<h3>1. 材质参数</h3>
+<p>按部位分类（系统自动识别材质名称）：</p>
+<ul>
+<li><b>👤 皮肤</b> — Diffuse 强度/色调、高光强度/颜色/范围、Toon、SPH 反光、SSS 通透、凹凸强度、Matcap 模式、透明度</li>
+<li><b>💇 头发</b> — 同上（默认高光更强）</li>
+<li><b>👁 眼睛</b> — 高光 + 自发光 + 自发光颜色（让瞳孔有神）</li>
+<li><b>👗 衣服</b> — 同皮肤</li>
+</ul>
+
+<h3>2. 打光参数</h3>
+<ul>
+<li><b>☀ 主光</b> — 强度、色温（3000K~8000K）、XYZ 方向、阴影强度</li>
+<li><b>💡 补光</b> — 侧面柔化阴影</li>
+<li><b>✨ 轮廓光</b> — 背光勾边</li>
+<li><b>🌐 环境半球光</b> / <b>💜 舞台地灯</b></li>
+</ul>
+
+<h3>3. 后处理滤镜</h3>
+<table>
+<tr><th>效果</th><th>说明</th><th>默认</th></tr>
+<tr><td>轮廓线</td><td>MMD 描边（宽度 + 颜色）</td><td>开</td></tr>
+<tr><td>Bloom 泛光</td><td>高光区域发光</td><td>开</td></tr>
+<tr><td>色彩校正</td><td>亮度 / 对比度 / 饱和度</td><td>开</td></tr>
+<tr><td>景深 (DOF)</td><td>焦距 / 光圈 / 最大模糊</td><td>关</td></tr>
+<tr><td>皮肤 SSS</td><td>次表面散射 + 散射色 + 边缘柔光</td><td>开</td></tr>
+<tr><td>锐化</td><td>画面锐化</td><td>关</td></tr>
+<tr><td>暗角</td><td>四角压暗</td><td>开</td></tr>
+<tr><td>色调分离</td><td>暗部/亮部色调偏移</td><td>关</td></tr>
+<tr><td>FXAA</td><td>抗锯齿</td><td>关</td></tr>
+</table>
+
+<h3>4. 阴影 & 环境</h3>
+<ul>
+<li>阴影分辨率（1024/2048/4096）+ 模糊</li>
+<li>环境反射强度</li>
+<li>雾效浓度</li>
+</ul>
+
+<h3>5. 舞台 & 输出</h3>
+<ul>
+<li>反射地面 / 发光圆环 / 网格线 — 开关</li>
+<li>色调映射 — ACES / Reinhard / Cineon / Linear / AgX / Neutral</li>
+<li>曝光、背景颜色</li>
+<li>相机视角 (FOV) — 20°~120°</li>
+<li>动画速度 — 0.1x~3x</li>
+<li>重力 — 影响衣物/头发物理摆动</li>
+</ul>
+
+<h2>四、预设系统</h2>
+<p>渲染面板顶部提供多种快速预设，一键切换渲染风格：</p>
+<table>
+<tr><th>预设</th><th>风格</th></tr>
+<tr><td>默认</td><td>标准 MMD 渲染</td></tr>
+<tr><td>卡通二次元</td><td>强 Toon、清晰轮廓线</td></tr>
+<tr><td>写实柔和</td><td>低 Toon、柔和阴影、FXAA</td></tr>
+<tr><td>暖光舞台</td><td>3000K 暖光、高皮肤高光</td></tr>
+<tr><td>赛博朋克</td><td>冷光、强 Bloom、锐化</td></tr>
+<tr><td>日落黄昏</td><td>橙光、暖色调、强暗角</td></tr>
+<tr><td>月光清冷</td><td>冷蓝光、蓝色色调</td></tr>
+<tr><td>演唱会</td><td>强光、高曝光、高 Bloom</td></tr>
+<tr><td>水彩画风</td><td>低饱和、高 SSS、浅色背景</td></tr>
+<tr><td>古风仙侠 v1/v2/v3</td><td>暖暗背景、皮肤通透、强轮廓光</td></tr>
+</table>
+
+<h2>五、导入/导出参数</h2>
+<ul>
+<li><b>📤 导出参数</b> — 保存当前所有设置为 JSON 文件</li>
+<li><b>📥 导入参数</b> — 加载 JSON 文件恢复设置</li>
+<li><b>↺ 恢复默认</b> — 重置所有设置</li>
+</ul>
+<p>导出的 JSON 包含所有渲染设置和单独材质参数，可以分享给他人或作为自定义预设保存。</p>
+
+<h2>六、单独材质编辑</h2>
+<p>点击工具栏 🎨 按钮打开<b>单独材质编辑器</b>，可以针对模型的每一个材质独立调参：</p>
+<ul>
+<li>左侧按类别（皮肤/头发/眼睛/衣服）列出模型所有材质</li>
+<li>点击任意材质，右侧显示该材质的独立参数编辑器</li>
+<li>修改后实时生效，已修改的参数标记为橙色</li>
+<li><b>👁 高亮定位</b> — 点击后模型上对应部分发光高亮，其他部分变半透明，方便确认材质位置</li>
+<li><b>↺ 恢复为类别默认</b> — 清除该材质的独立设置，恢复为类别统一参数</li>
+<li>面板支持<b>拖拽移动</b>：按住标题栏拖动即可调整位置，避免遮挡模型</li>
+</ul>
+<div class="note">💡 单独材质设置会在导出参数时一并保存，导入时自动恢复。</div>
+
+<h2>七、截图</h2>
+<ul>
+<li>点击工具栏 📷 按钮或按 <code>P</code> 键截取当前画面</li>
+<li>自动保存为 PNG 文件下载</li>
+<li>截图包含所有后处理效果</li>
+</ul>
+
+<h2>八、表情 Morph 控制</h2>
+<p>点击工具栏 😊 按钮打开<b>表情控制面板</b>：</p>
+<ul>
+<li>自动读取模型的表情数据（morphTargetDictionary）</li>
+<li>按 MMD 标准分组：😤 眉毛 / 👁 眼睛 / 👄 嘴巴 / ✨ 其他</li>
+<li>每个表情一个滑块（0~1），拖动即可实时预览</li>
+<li>支持一键重置所有表情</li>
+</ul>
+<div class="note">💡 表情数据来自 PMX/PMD 模型本身，不同模型包含的表情数量和类型不同。</div>
+
+<h2>九、多模型加载</h2>
+<p>点击工具栏 👥 按钮打开<b>模型管理面板</b>：</p>
+<ul>
+<li>支持同时加载多个模型（每次加载不会替换已有模型）</li>
+<li>模型列表显示所有已加载模型，点击名称切换为<b>活跃模型</b></li>
+<li>👁 按钮 — 显示/隐藏单个模型</li>
+<li>✕ 按钮 — 从场景中移除模型</li>
+<li>活跃模型接收动作、表情控制和变换操作</li>
+</ul>
+
+<h2>十、模型变换（位置/旋转/缩放）</h2>
+<p>点击工具栏 ✥ 按钮开启<b>变换工具</b>：</p>
+<ul>
+<li>↔ 移动模式 — 拖拽箭头移动模型位置</li>
+<li>↻ 旋转模式 — 拖拽圆环旋转模型</li>
+<li>⇲ 缩放模式 — 拖拽方块缩放模型大小</li>
+<li>变换工具作用于当前活跃模型</li>
+<li>拖拽变换时相机旋转自动禁用，松开后恢复</li>
+</ul>
+
+<h2>十一、环境贴图 / HDR 天空盒</h2>
+<p>在模型管理面板底部可切换环境贴图：</p>
+<ul>
+<li>5 种内置环境：默认暗色、日间户外、日落、室内暖光、夜空</li>
+<li>支持加载自定义 HDR 文件（.hdr / .exr 格式）</li>
+<li>勾选「环境作为背景」可将环境贴图显示为场景背景</li>
+<li>环境贴图影响模型的反射和光照效果</li>
+</ul>
+
+<h2>十二、全屏模式</h2>
+<ul>
+<li>点击工具栏 ⛶ 按钮或按 <code>F</code> 键进入全屏</li>
+<li>全屏后右上角有 ✕ 浮动按钮，点击即可退出（手机端同样适用）</li>
+<li>桌面端也可按 <code>Esc</code> 或 <code>F</code> 退出</li>
+<li>全屏时鼠标移到顶部/底部可显示工具栏和状态栏</li>
+</ul>
+
+<h2>十三、其他功能</h2>
+<ul>
+<li><b>中英文切换</b> — 工具栏 EN/中文 按钮，选择保存在浏览器中</li>
+<li><b>移动端适配</b> — 自动响应式布局、触控优化、性能降级</li>
+<li><b>拖拽上传</b> — VMD/音乐文件可直接拖入视图区域</li>
+<li><b>物理模拟</b> — 基于 ammo.js，头发/裙子/丝带有物理摆动</li>
+</ul>
+
+<h2>十四、快捷键</h2>
+<table>
+<tr><th>快捷键</th><th>功能</th></tr>
+<tr><td><code>空格</code></td><td>播放 / 暂停</td></tr>
+<tr><td><code>R</code></td><td>重置</td></tr>
+<tr><td><code>F</code></td><td>全屏切换</td></tr>
+<tr><td><code>P</code></td><td>截图</td></tr>
+</table>
+
+<h2>十五、资源获取</h2>
+<ul>
+<li><a href="https://www.aplaybox.com/" target="_blank">模之屋</a> — 中文 MMD 资源站</li>
+<li><a href="https://bowlroll.net/" target="_blank">Bowlroll</a> — 日本 MMD 资源分享平台</li>
+<li><a href="https://www.deviantart.com/" target="_blank">DeviantArt</a> — 搜索 "MMD model DL"</li>
+<li><a href="https://3d.nicovideo.jp/" target="_blank">Niconi立体</a> — Niconico 3D 模型</li>
+</ul>
+</div>
+
+<!-- ═══ English ═══ -->
+<div class="en">
+<h1>🎵 MMD Viewer User Guide</h1>
+<p>A Three.js-based MMD model viewer with PMX model loading, VMD animation, music sync, and rich render parameter controls.</p>
+
+<h2>1. Loading Resources</h2>
+<table>
+<tr><th>Feature</th><th>How</th><th>Formats</th></tr>
+<tr><td>📦 Model</td><td>Click "Load Model Folder" and select the <b>entire folder</b></td><td>PMX / PMD + textures</td></tr>
+<tr><td>💃 Motion</td><td>Click button or drag & drop</td><td>VMD (multi-file)</td></tr>
+<tr><td>🎥 Camera</td><td>Click button or drag (filename contains "camera")</td><td>VMD</td></tr>
+<tr><td>🏟 Stage</td><td>Click "Load Stage Folder" and select the entire folder</td><td>PMX / PMD</td></tr>
+<tr><td>🎵 Audio</td><td>Click button or drag & drop</td><td>MP3 / WAV / OGG</td></tr>
+</table>
+<div class="note">⚠ Models and stages require selecting the <b>entire folder</b> (with PMX + textures), not just a single file.</div>
+<p>You can also click the 📚 button to open the <b>Built-in Library</b> with pre-loaded models, motions, and music.</p>
+
+<h2>2. Playback Controls</h2>
+<table>
+<tr><th>Action</th><th>Button</th><th>Shortcut</th></tr>
+<tr><td>Play</td><td>▶ Play</td><td>Space</td></tr>
+<tr><td>Pause</td><td>⏸ Pause</td><td>Space</td></tr>
+<tr><td>Reset</td><td>⏹ Reset</td><td>R</td></tr>
+<tr><td>Volume</td><td>🔊 Slider</td><td>—</td></tr>
+</table>
+<div class="note">Resources don't auto-play after loading. Click "Play" to start. The top-left overlay shows loaded resources.</div>
+
+<h3>3D Viewport</h3>
+<table>
+<tr><th>Action</th><th>Mouse</th><th>Touch</th></tr>
+<tr><td>Rotate</td><td>Left-click drag</td><td>One finger</td></tr>
+<tr><td>Zoom</td><td>Scroll wheel</td><td>Pinch</td></tr>
+<tr><td>Pan</td><td>Right-click drag</td><td>Two fingers</td></tr>
+</table>
+
+<h2>3. Render Settings</h2>
+<p>Click the ⚙ button to open the render settings panel with 5 sections:</p>
+
+<h3>3.1 Material Parameters</h3>
+<p>Auto-classified by material name (supports Chinese, Japanese, English):</p>
+<ul>
+<li><b>👤 Skin</b> — Diffuse intensity/tint, specular intensity/color/range, Toon, SPH, SSS, bump, matcap mode, opacity</li>
+<li><b>💇 Hair</b> — Same as skin (higher specular defaults)</li>
+<li><b>👁 Eyes</b> — Specular + self-illumination + emissive color</li>
+<li><b>👗 Clothes</b> — Same as skin</li>
+</ul>
+
+<h3>3.2 Lighting</h3>
+<ul>
+<li><b>☀ Key Light</b> — Intensity, color temp (3000K~8000K), XYZ direction, shadow</li>
+<li><b>💡 Fill Light</b> — Side fill to soften shadows</li>
+<li><b>✨ Rim Light</b> — Backlight edge glow</li>
+<li><b>🌐 Hemisphere</b> / <b>💜 Stage Light</b></li>
+</ul>
+
+<h3>3.3 Post-Processing</h3>
+<table>
+<tr><th>Effect</th><th>Description</th><th>Default</th></tr>
+<tr><td>Outline</td><td>MMD edge lines (width + color)</td><td>On</td></tr>
+<tr><td>Bloom</td><td>Highlight glow</td><td>On</td></tr>
+<tr><td>Color Correction</td><td>Brightness / Contrast / Saturation</td><td>On</td></tr>
+<tr><td>Depth of Field</td><td>Focus / Aperture / Max blur</td><td>Off</td></tr>
+<tr><td>Skin SSS</td><td>Subsurface scattering + scatter color + edge glow</td><td>On</td></tr>
+<tr><td>Sharpen</td><td>Image sharpening</td><td>Off</td></tr>
+<tr><td>Vignette</td><td>Edge darkening</td><td>On</td></tr>
+<tr><td>Tone Split</td><td>Shadow/highlight color shift</td><td>Off</td></tr>
+<tr><td>FXAA</td><td>Anti-aliasing</td><td>Off</td></tr>
+</table>
+
+<h3>3.4 Shadow & Environment</h3>
+<ul>
+<li>Shadow resolution (1024/2048/4096) + blur</li>
+<li>Environment reflection intensity</li>
+<li>Fog density</li>
+</ul>
+
+<h3>3.5 Stage & Output</h3>
+<ul>
+<li>Reflective ground / Glow ring / Grid — toggles</li>
+<li>Tone mapping — ACES / Reinhard / Cineon / Linear / AgX / Neutral</li>
+<li>Exposure, background color</li>
+<li>Camera FOV — 20°~120°</li>
+<li>Animation speed — 0.1x~3x</li>
+<li>Gravity — affects cloth/hair physics</li>
+</ul>
+
+<h2>4. Presets</h2>
+<p>Quick presets at the top of the render panel:</p>
+<table>
+<tr><th>Preset</th><th>Style</th></tr>
+<tr><td>Default</td><td>Standard MMD rendering</td></tr>
+<tr><td>Anime Toon</td><td>Strong Toon, clear outlines</td></tr>
+<tr><td>Soft Realistic</td><td>Low Toon, soft shadows, FXAA</td></tr>
+<tr><td>Warm Stage</td><td>3000K warm light, high skin specular</td></tr>
+<tr><td>Cyberpunk</td><td>Cool light, strong Bloom, sharpen</td></tr>
+<tr><td>Sunset</td><td>Orange light, warm tones, strong vignette</td></tr>
+<tr><td>Moonlight</td><td>Cool blue light</td></tr>
+<tr><td>Concert</td><td>Strong light, high exposure</td></tr>
+<tr><td>Watercolor</td><td>Low saturation, high SSS, light background</td></tr>
+<tr><td>Chinese Fantasy v1/v2/v3</td><td>Warm dark background, translucent skin, strong rim light</td></tr>
+</table>
+
+<h2>5. Import / Export</h2>
+<ul>
+<li><b>📤 Export</b> — Save all settings as JSON file</li>
+<li><b>📥 Import</b> — Load JSON file to restore settings</li>
+<li><b>↺ Reset</b> — Reset all settings to default</li>
+</ul>
+<p>Exported JSON files include all render settings and per-material overrides. They can be shared with others or saved as custom presets.</p>
+
+<h2>6. Per-Material Editor</h2>
+<p>Click the 🎨 button in the toolbar to open the <b>Per-Material Editor</b>, allowing independent parameter control for each material:</p>
+<ul>
+<li>Left panel lists all materials grouped by category (Skin/Hair/Eyes/Clothes)</li>
+<li>Click any material to edit its individual parameters on the right</li>
+<li>Changes apply in real-time; overridden parameters are marked in orange</li>
+<li><b>👁 Highlight</b> — Highlights the selected material on the model (glows blue) while dimming everything else, so you can see exactly where it is</li>
+<li><b>↺ Reset to Category</b> — Clears individual overrides, reverts to category defaults</li>
+<li>Panel is <b>draggable</b>: hold the title bar and drag to reposition, avoiding model obstruction</li>
+</ul>
+<div class="note">💡 Per-material settings are included when exporting parameters and restored on import.</div>
+
+<h2>7. Screenshot</h2>
+<ul>
+<li>Click the 📷 button or press <code>P</code> to capture the current frame</li>
+<li>Automatically downloads as a PNG file</li>
+<li>Screenshot includes all post-processing effects</li>
+</ul>
+
+<h2>8. Morph / Expression Controls</h2>
+<p>Click the 😊 button to open the <b>Morph Control Panel</b>:</p>
+<ul>
+<li>Automatically reads morph data from the model (morphTargetDictionary)</li>
+<li>Grouped by MMD standard: 😤 Eyebrow / 👁 Eyes / 👄 Mouth / ✨ Other</li>
+<li>Each morph has a slider (0~1) for real-time preview</li>
+<li>Reset All button to clear all morphs</li>
+</ul>
+<div class="note">💡 Morph data comes from the PMX/PMD model itself. Different models have different morphs.</div>
+
+<h2>9. Multi-Model Loading</h2>
+<p>Click the 👥 button to open the <b>Model Manager Panel</b>:</p>
+<ul>
+<li>Load multiple models simultaneously (new models are added, not replaced)</li>
+<li>Model list shows all loaded models; click a name to set it as <b>active</b></li>
+<li>👁 button — show/hide individual models</li>
+<li>✕ button — remove a model from the scene</li>
+<li>The active model receives motion, morph, and transform operations</li>
+</ul>
+
+<h2>10. Model Transform (Position/Rotation/Scale)</h2>
+<p>Click the ✥ button to enable <b>Transform Controls</b>:</p>
+<ul>
+<li>↔ Translate mode — drag arrows to move the model</li>
+<li>↻ Rotate mode — drag rings to rotate the model</li>
+<li>⇲ Scale mode — drag handles to resize the model</li>
+<li>Transform applies to the currently active model</li>
+<li>Camera orbit is disabled while dragging, restored on release</li>
+</ul>
+
+<h2>11. Environment Map / HDR Skybox</h2>
+<p>At the bottom of the Model Manager panel, you can switch environment maps:</p>
+<ul>
+<li>5 built-in environments: Default Dark, Daylight Outdoor, Sunset, Indoor Warm, Night Sky</li>
+<li>Load custom HDR files (.hdr / .exr format)</li>
+<li>Check "Environment as Background" to display the env map as scene background</li>
+<li>Environment maps affect model reflections and lighting</li>
+</ul>
+
+<h2>12. Fullscreen Mode</h2>
+<ul>
+<li>Click the ⛶ button or press <code>F</code> to enter fullscreen</li>
+<li>A floating ✕ button appears in the top-right corner to exit (works on mobile too)</li>
+<li>On desktop, you can also press <code>Esc</code> or <code>F</code> to exit</li>
+<li>In fullscreen, move mouse to top/bottom edges to reveal toolbar and status bar</li>
+</ul>
+
+<h2>13. Other Features</h2>
+<ul>
+<li><b>Language</b> — EN/中文 toggle in toolbar, saved in browser</li>
+<li><b>Mobile</b> — Responsive layout, touch-friendly, auto quality reduction</li>
+<li><b>Drag & Drop</b> — VMD/audio files can be dropped onto the viewport</li>
+<li><b>Physics</b> — ammo.js powered hair/skirt/ribbon simulation</li>
+</ul>
+
+<h2>14. Keyboard Shortcuts</h2>
+<table>
+<tr><th>Key</th><th>Action</th></tr>
+<tr><td><code>Space</code></td><td>Play / Pause</td></tr>
+<tr><td><code>R</code></td><td>Reset</td></tr>
+<tr><td><code>F</code></td><td>Toggle Fullscreen</td></tr>
+<tr><td><code>P</code></td><td>Screenshot</td></tr>
+</table>
+
+<h2>15. Resource Sites</h2>
+<ul>
+<li><a href="https://www.aplaybox.com/" target="_blank">Aplaybox</a> — Chinese MMD resource site</li>
+<li><a href="https://bowlroll.net/" target="_blank">Bowlroll</a> — Japanese MMD sharing platform</li>
+<li><a href="https://www.deviantart.com/" target="_blank">DeviantArt</a> — Search "MMD model DL"</li>
+<li><a href="https://3d.nicovideo.jp/" target="_blank">Niconi 3D</a> — Niconico 3D models</li>
+</ul>
+</div>
+
+</div>
+<script>
+function toggleLang(){document.body.classList.toggle('lang-en');localStorage.setItem('help-lang',document.body.classList.contains('lang-en')?'en':'zh')}
+if(localStorage.getItem('help-lang')==='en')document.body.classList.add('lang-en');
+</script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+{
+  "models": [
+    { "name": "天津風 (Amatsukaze)", "folder": "amatsukaze", "pmx": "amatsukaze_noweapon.pmx", "thumbnail": "🚢" },
+    { "name": "絆愛 (Kizuna AI)", "folder": "kizunaai", "pmx": "kizunaai.pmx", "thumbnail": "🤖" },
+    { "name": "初音ミク Lat式", "folder": "miku_lat", "pmx": "mikuVer2.31_Normal.pmd", "thumbnail": "🎤" },
+    { "name": "蕾米莉亚 (Remilia)", "folder": "remilia", "pmx": "remilia1.pmx", "thumbnail": "🦇" },
+    { "name": "Ruby-chan", "folder": "ruby-chan", "pmx": "Ruby-chan.pmd", "thumbnail": "💎" },
+    { "name": "卜卜 (反和谐)", "folder": "【尘白禁区】卜卜_反和谐_by_金光魔王吉蒙里_364d67e7b775a2a42b1700b2c90e7bee", "pmx": "卜卜 F.pmx", "thumbnail": "⚔" },
+    { "name": "卜卜 小天师", "folder": "【尘白禁区】卜卜-小天师_对称袜.ver_极地羽翼_by_神帝宇_by_极地羽翼_210634ab6f97d9fdb67961015879c804", "pmx": "【尘白禁区】卜卜-小天师_对称袜.ver_极地羽翼_by_神帝宇/bobo2.1.pmx", "thumbnail": "🧙" },
+    { "name": "幽潮 灿阳一刻", "folder": "【尘白禁区】幽潮-灿阳一刻 小清凉版本_by_尘白禁区 改模_by_模之屋@juncle_by_juncle_010e4bb5c8f6e4ad0b2408a7defa5edc", "pmx": "【尘白禁区】幽潮-灿阳一刻 小清凉版本_by_尘白禁区 改模_by_模之屋@juncle/幽潮-灿阳一刻 小清凉版本.pmx", "thumbnail": "☀" },
+    { "name": "卜卜 (神帝宇)", "folder": "尘白禁区—卜卜_by_神帝宇_4eafc2a81ea2910a6f71b33102cd2dd8", "pmx": "尘白禁区—卜卜/卜卜a2.0.pmx", "thumbnail": "🎀" },
+    { "name": "佩姬 凤翼天翔", "folder": "佩姬-凤翼天翔_by_一口吃不下的易小竹_92f13c1e7dcf9c81e93d1abd712e03bb", "pmx": "佩姬-凤翼天翔/佩姬.pmx", "thumbnail": "🦅" },
+    { "name": "凯茜娅 狂诗", "folder": "凯茜娅-狂诗 星抚恋音_by_神帝宇_ff36ca1b48e13513d927d00366378c7c", "pmx": "凯茜娅-狂诗 星抚恋音/凯茜娅-狂诗 星抚恋音a1.0.pmx", "thumbnail": "🎵" },
+    { "name": "妮塔 悸响", "folder": "妮塔-悸响_by_神帝宇_ab2c90e9d0b25ec7db360b083a32ff4c", "pmx": "妮塔-悸响/妮塔-悸响a2.0.pmx", "thumbnail": "💜" },
+    { "name": "妮塔 林间潋滟", "folder": "妮塔-悸响 林间潋滟_by_神帝宇_f386f53296406dee0a18f08952e760b0", "pmx": "妮塔-悸响 林间潋滟/妮塔-悸响 林间潋滟a1.0.pmx", "thumbnail": "🌿" },
+    { "name": "妮塔 轻罗曼舞", "folder": "妮塔-悸响 轻罗曼舞_by_神帝宇_b24a7608eaa831ad81f4ba29ca0e4975", "pmx": "妮塔-悸响 轻罗曼舞/妮塔-悸响 轻罗曼舞a1.0.pmx", "thumbnail": "💃" },
+    { "name": "恩雅 望云清咏", "folder": "恩雅-澜风 望云清咏_by_神帝宇_d1eec9bc2814d9b7c5dab8a49f7ab6dd", "pmx": "恩雅-澜风 望云清咏/恩雅-澜风 望云清咏a2.0.pmx", "thumbnail": "☁" },
+    { "name": "肴 夜天光", "folder": "肴-夜天光 共待曙明_by_神帝宇_0ba33fbb9899adcf123662be6e7a3c19", "pmx": "肴-夜天光 共待曙明/肴-夜天光 共待曙明a1.0.pmx", "thumbnail": "🌙" },
+    { "name": "芙提雅 大老师", "folder": "芙提雅-大老师_by_神帝宇_84b36b11c6a35d56f7a6f9d88457202b", "pmx": "芙提雅-大老师/大老师1.0.pmx", "thumbnail": "👩‍🏫" },
+    { "name": "苔丝 恋如花舞", "folder": "苔丝-绮幻 恋如花舞_by_神帝宇_364ec9c776ad09978cb4b5c87b88a47a", "pmx": "苔丝-绮幻 恋如花舞/苔丝-绮幻 恋如花舞a1.0.pmx", "thumbnail": "🌸" },
+    { "name": "茉莉安 绒尾迷梦", "folder": "茉莉安-幽潮 绒尾迷梦_by_神帝宇_de4f56ccde88986a36956d290d085ab3", "pmx": "茉莉安-幽潮 绒尾迷梦/茉莉安-幽潮 绒尾迷梦a1.0.pmx", "thumbnail": "🐱" },
+    { "name": "薇蒂雅 舞夜与焰", "folder": "薇蒂雅-龙舌兰 舞夜与焰_by_神帝宇_f75a7dd5874c2ffa6488b0fc76298ba3", "pmx": "薇蒂雅-龙舌兰 舞夜与焰/薇蒂雅-龙舌兰 舞夜与焰a1.0.pmx", "thumbnail": "🔥" },
+    { "name": "辰星 慵倚花阴", "folder": "辰星-琼弦 慵倚花阴_by_神帝宇_5dd8de34b966f6fe8692ed20467efdd7", "pmx": "辰星-琼弦 慵倚花阴/辰星-琼弦 慵倚花阴a1.0.pmx", "thumbnail": "⭐" }
+  ],
+  "motions": [
+    { "name": "Pink Cat", "file": "pinkcat.vmd" },
+    { "name": "Deep Sea Girl", "file": "Deep Sea Girl.vmd" },
+    { "name": "Masked Bitch", "file": "Masked bitch.vmd" },
+    { "name": "路西恩融解", "file": "luxinrongjie.vmd" }
+  ],
+  "cameras": [
+    { "name": "Camera Motion", "file": "camera.vmd" }
+  ],
+  "audio": [
+    { "name": "Pink Cat", "file": "pinkcat.mp3" },
+    { "name": "深海少女", "file": "shenhaishaonv.mp3" }
+  ]
+}
